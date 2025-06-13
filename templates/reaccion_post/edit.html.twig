@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ReaccionPost{% endblock %}
+
+{% block body %}
+    <h1>Edit ReaccionPost</h1>
+
+    {{ include('reaccion_post/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_reaccion_post_index') }}">back to list</a>
+
+    {{ include('reaccion_post/_delete_form.html.twig') }}
+{% endblock %}

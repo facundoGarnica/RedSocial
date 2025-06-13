@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ReaccionComentario{% endblock %}
+
+{% block body %}
+    <h1>Create new ReaccionComentario</h1>
+
+    {{ include('reaccion_comentario/_form.html.twig') }}
+
+    <a href="{{ path('app_reaccion_comentario_index') }}">back to list</a>
+{% endblock %}

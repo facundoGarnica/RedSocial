@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ReaccionComentario index{% endblock %}
+
+{% block body %}
+    <h1>ReaccionComentario index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Emoticon</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reaccion_comentario in reaccion_comentarios %}
+            <tr>
+                <td>{{ reaccion_comentario.id }}</td>
+                <td>{{ reaccion_comentario.emoticon }}</td>
+                <td>
+                    <a href="{{ path('app_reaccion_comentario_show', {'id': reaccion_comentario.id}) }}">show</a>
+                    <a href="{{ path('app_reaccion_comentario_edit', {'id': reaccion_comentario.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reaccion_comentario_new') }}">Create new</a>
+{% endblock %}
