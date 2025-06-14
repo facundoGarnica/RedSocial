@@ -59,6 +59,43 @@ class HomeController extends AbstractController
         ]);
     }
 
+   #[Route('borrarpost/{id}', name: 'app_borrar_post', methods: ['POST'])]
+public function borrarPost(Post $post, Request $request, EntityManagerInterface $em): Response
+{
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    if ($post->getUsuario()->getId() !== $user->getId() && !in_array('ROLE_ADMIN', $user->getRoles())) {
+        throw $this->createAccessDeniedException('No tienes permiso para eliminar este post.');
+    }
+
+    if (!$this->isCsrfTokenValid('delete_post' . $post->getId(), $request->request->get('_token'))) {
+        $this->addFlash('error', 'Token CSRF inválido.');
+        return $this->redirectToRoute('app_home');
+    }
+
+    // Eliminar imagen física si existe
+    if ($post->getImagen()) {
+        $rutaImagen = $this->getParameter('kernel.project_dir') . '/public/images/' . $post->getImagen();
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+    }
+
+    $em->remove($post);
+    $em->flush();
+
+    if ($request->isXmlHttpRequest()) {
+        return new JsonResponse(['message' => 'Post eliminado correctamente.']);
+    }
+
+    $this->addFlash('success', 'Post eliminado correctamente.');
+    return $this->redirectToRoute('app_home');
+}
+
 
     #[Route('/comentarPost/{id}', name: 'app_comentar_post', methods: ['POST'])]
     public function comentarPost(Request $request, Post $post, EntityManagerInterface $em): Response
@@ -97,10 +134,10 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Verificamos que el usuario sea el autor del comentario
-        if ($comentario->getUsuario()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException('No tienes permiso para eliminar este comentario.');
-        }
+        // Verificamos que el usuario sea el autor del comentario o que tenga el rol de administrador
+        if ($comentario->getUsuario()->getId() !== $user->getId() && !in_array('ROLE_ADMIN', $user->getRoles())) {
+    throw $this->createAccessDeniedException('No tienes permiso para eliminar este comentario.');
+}
 
         if ($this->isCsrfTokenValid('delete_comentario' . $comentario->getId(), $request->request->get('_token'))) {
             $em->remove($comentario);

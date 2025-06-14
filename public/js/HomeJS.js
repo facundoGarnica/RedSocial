@@ -22,7 +22,54 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    // Borrar posts vía fetch
+    document.querySelectorAll('.btn-eliminar-post').forEach(button => {
+        button.addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            if (!confirm('¿Seguro que querés eliminar este post?')) {
+                return;
+            }
+
+            // El formulario padre del botón
+            const form = button.closest('form');
+            if (!form) {
+                alert('No se encontró el formulario para borrar el post.');
+                return;
+            }
+
+            const url = form.action;
+            const formData = new FormData(form);
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (res.ok) {
+                    // Eliminar post del DOM
+                    const postItem = form.closest('.post-item');
+                    if (postItem) {
+                        postItem.remove();
+                    }
+                    alert('Post eliminado correctamente.');
+                } else {
+                    const data = await res.json();
+                    alert(data.error || 'Error al eliminar el post.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error de red al eliminar el post.');
+            }
+        });
+    });
 });
+
 
 async function enviarReaccionFetch(postId, reaccion, contenedor) {
     const formData = new FormData();
