@@ -1,0 +1,420 @@
+/* Reset básico */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Barra superior */
+.BarraNavegacion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 96%;
+  height: 60px; /* Altura fija para poder usar en cálculo */
+  background-color: #333;
+  color: white;
+  padding: 10px 2%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Arial, sans-serif;
+  z-index: 1001;
+}
+
+.BarraNavegacion h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.BarraNavegacion nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.BarraNavegacion nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.BarraNavegacion nav ul li a:hover {
+  background-color: #555;
+}
+
+.BarraNavegacion .user-welcome {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ffcc00;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: #444;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.BarraNavegacion .logout-link {
+  color: #ff6666;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.BarraNavegacion .logout-link:hover {
+  color: #ff3333;
+}
+
+h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Barra lateral izquierda */
+.BarraIzquierda {
+  position: fixed;
+  top: 60px; /* Igual a la altura de la barra de navegación */
+  left: 0;
+  width: 12%;
+  height: calc(100vh - 60px);
+  background-color: #222;
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.BarraIzquierda ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.BarraIzquierda ul li {
+  margin: 10px 0;
+}
+
+.BarraIzquierda ul li a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.BarraIzquierda ul li a:hover {
+  background-color: #444;
+}
+
+.contenido-principal {
+  margin-left: 15%;
+  padding: 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #fff;
+    box-shadow: 0 2px 8px rgba(211, 84, 0, 0.2);
+}
+
+.bienvenida {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 800px;
+  margin: auto;
+}
+
+.bienvenida h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.bienvenida p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.imagen-bienvenida {
+  max-width: 50%; /* Reduce al 60% del ancho del contenedor */
+  height: auto;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Contenedor principal */
+.contenido-principal {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #1c1e21;
+}
+
+/* Contenedor principal */
+.contenido-principal {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #1c1e21;
+}
+
+/* Título general */
+.posts-list-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddfe2;
+  padding-bottom: 10px;
+  text-align: center;
+  color: #d35400;
+  /* naranja fuerte */
+}
+
+/* Lista de posts */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card de post */
+.fb-post-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+  padding: 15px 20px;
+  transition: box-shadow 0.2s ease;
+  text-align: center;
+  /* Centrar todo el contenido dentro del post */
+}
+
+.fb-post-card:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+}
+
+/* Header del post: usuario y fecha */
+/* Ahora los centramos y ponemos naranja suave */
+.fb-post-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+/* Usuario con color naranja fuerte */
+.fb-post-user {
+  color: #d35400;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fb-post-user:hover {
+  text-decoration: underline;
+}
+
+/* Fecha con naranja más claro */
+.fb-post-date {
+  color: #f39c12;
+  font-style: italic;
+}
+
+/* Contenido del post */
+.fb-post-content {
+  font-size: 14px;
+  color: #d35400;
+}
+
+/* Título del post */
+.fb-post-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #e67e22;
+  /* naranja vivo */
+  text-align: center;
+}
+
+/* Descripción del post */
+.fb-post-description {
+  margin-bottom: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  color: #0000008a;
+  /* naranja claro */
+}
+
+/* Imagen del post */
+.fb-post-image {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 8px;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+}
+
+/* Bienvenida */
+.bienvenida {
+  text-align: center;
+  color: #d35400;
+}
+
+.imagen-bienvenida {
+  margin-top: 20px;
+  max-width: 300px;
+  opacity: 0.9;
+}
+
+.post-reactions {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  /* centramos todo */
+}
+
+.reaction-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  user-select: none;
+  color: #d35400;
+  /* naranja */
+}
+
+.reaction-btn:hover {
+  transform: scale(1.5);
+}
+
+/*Css para boton de comentar*/
+
+.btn-comentar{
+  background-color: #d35400;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.comentar-form {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.comentario-input {
+  width: 100%;
+  max-width: 100%;
+  min-height: 60px;
+  padding: 10px;
+  border: 1px solid #d35400;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.btn-enviar-comentario  {
+  margin-top: 8px;
+  background-color: #d35400;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-enviar-comentario:hover {
+  background-color: #e67e22;
+}
+
+.comments-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment-item {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  background-color: #fafafa;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.comment-item p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.comment-item p strong {
+  font-weight: 700;
+  color: #000;
+  margin-right: 0.5rem;
+}
+
+.comment-date {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #888888; /* gris más claro */
+  font-style: italic;
+}
+
+.emote-comentario {
+  font-size: 1.1rem;       /* Tamaño legible pero pequeño */
+  background: transparent; /* Sin fondo */
+  border: none;            /* Sin bordes */
+  cursor: pointer;         /* Manito al pasar */
+  padding: 0 6px;          /* Espacio horizontal para que no estén tan juntos */
+  user-select: none;       /* No seleccionable al hacer click */
+  transition: transform 0.15s ease, color 0.2s ease;
+  color: #555;             /* Color gris medio */
+}
+
+.emote-comentario:hover,
+.emote-comentario:focus {
+  color: #e67e22;          /* Color naranja al hover/focus */
+  transform: scale(1.3);   /* Zoom suave */
+  outline: none;           /* Quita outline por defecto */
+}
+
+.emote-comentario:active {
+  transform: scale(1.1);   /* Pequeño “rebote” al hacer click */
+  color: #d35400;          /* Naranja más oscuro al click */
+}
+.btn-eliminar-comentario {
+  position: absolute;        /* Para poder ubicarlo respecto al contenedor */
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #c0392b;           /* rojo suave para botón de eliminar */
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-eliminar-comentario:hover {
+  background-color: rgba(192, 57, 43, 0.1);
+}
+.comment-item {
+  position: relative;
+  /* resto de estilos que ya tengas */
+}

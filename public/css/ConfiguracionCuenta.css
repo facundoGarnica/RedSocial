@@ -1,0 +1,71 @@
+.config-container {
+    max-width: 500px;
+    margin: 60px auto;
+    background-color: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.config-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #ffcc00;
+}
+
+.config-section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    color: #ffcc00;
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+}
+
+.config-section p {
+    margin: 8px 0;
+    color: #ddd;
+}
+
+.placeholder-text {
+    font-style: italic;
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+.btnregresar {
+    background-color: #e68200;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.btnregresar:hover {
+    background-color: #a36302;
+}
+.info-box {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-left: 5px solid #ffcc00;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.info-box p {
+    margin: 0;
+    color: #eee;
+    font-size: 0.95rem;
+}

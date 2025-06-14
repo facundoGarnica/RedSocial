@@ -2,19 +2,144 @@
 
 {% block title %}Hello HomeController!{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/Home.css') }}">
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/Home_js.js') }}"></script>
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/socialred/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/socialred/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+<div class="BarraNavegacion">
+    <h1><a href="{{ path('app_home') }}">Home</a></h1>
+    <nav>
+        <ul>
+            {% if app.user %}
+                <li>
+                    <span class="user-welcome">Hola, {{ app.user.persona.Nombre }}</span>
+                    <a href="{{ path('app_logout') }}" class="logout-link">Cerrar sesión</a>
+                </li>
+            {% else %}
+                <li><a href="{{ path('app_register') }}">Registrarse</a></li>
+                <li><a href="{{ path('app_login') }}">Iniciar sesión</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
+
+
+
+<div class="BarraIzquierda">
+    {% if app.user %}
+        <ul>
+            <li>
+                <a href="{{ path('app_posteo_usuarios') }}">Mis Posts</a>
+            </li>
+            <li>
+                <a href="#">Buscar personas</a>
+            </li>
+            <li>
+                <a href="{{ path('app_configuracion') }}">Configurar cuenta</a>
+            </li>
+        </ul>
+    {% endif %}
+</div>
+
+
+
+
+
+<div class="contenido-principal">
+    {% if app.user %}
+        {% if posts is not empty %}
+            <h3 class="posts-list-title">Últimos posts de todos los usuarios</h3>
+            <div class="posts-list">
+                {% for post in posts %}
+                    <div class="post-item fb-post-card">
+    <div class="post-header fb-post-header">
+        <h3 class="fb-post-user">Publicado por: {{ post.usuario.persona.nombre }}</h3>
+        <p class="fb-post-date">El día {{ post.FechaCreacion ? post.FechaCreacion|date('d/m/Y') : 'Sin fecha' }}</p>
+    </div>
+
+    <div class="post-content fb-post-content">
+        <h4 class="fb-post-title">{{ post.titulo }}</h4>
+        <p class="fb-post-description">{{ post.descripcion }}</p>
+        {% if post.imagen %}
+            <img src="{{ asset('images/' ~ post.imagen) }}" alt="Imagen del post" class="post-image fb-post-image">
+        {% endif %}
+   <div class="post-item" data-post-id="{{ post.id }}">
+
+
+        <div class="post-reactions">
+            <button class="reaction-btn" title="Me gusta" data-reaccion="me_gusta">👍</button>
+            <button class="reaction-btn" title="No me gusta" data-reaccion="no_me_gusta">👎</button>
+            <button class="reaction-btn" title="Me entristece" data-reaccion="me_entristece">😢</button>
+            <button class="reaction-btn" title="Me enoja" data-reaccion="me_enoja">😠</button>
+            <button class="reaction-btn" title="Me encanta" data-reaccion="me_encanta">😍</button>
+        </div>
+
+        <div class="comentar-form">
+            <form action="{{ path('app_comentar_post', {id: post.id}) }}" method="POST">
+                <textarea class="comentario-input" name="descripcion" placeholder="Escribí un comentario..." required></textarea>
+                <button class="btn-enviar-comentario" type="submit">Comentar</button>
+            </form>
+        </div>
+
+<div class="comments-list">
+    {% for comentario in post.comentarios %}
+        <div class="comment-item">
+            <p>
+                <strong>{{ comentario.usuario.persona.Nombre }}:</strong>
+                {{ comentario.descripcion }}
+            </p>
+            <small class="comment-date">
+                Comentado el día {{ comentario.fechaCreacion ? comentario.fechaCreacion|date('d/m/Y') : 'Fecha no disponible' }}
+            </small>
+
+            <div class="post-reactions">
+                <button class="emote-comentario" title="Me gusta" data-reaccion="me_gusta">👍</button>
+                <button class="emote-comentario" title="No me gusta" data-reaccion="no_me_gusta">👎</button>
+                <button class="emote-comentario" title="Me entristece" data-reaccion="me_entristece">😢</button>
+                <button class="emote-comentario" title="Me enoja" data-reaccion="me_enoja">😠</button>
+                <button class="emote-comentario" title="Me encanta" data-reaccion="me_encanta">😍</button>
+            </div>
+
+            {% if app.user and app.user.id == comentario.usuario.id %}
+                <form method="post" action="{{ path('comentario_delete', {'id': comentario.id}) }}" onsubmit="return confirm('¿Seguro que querés eliminar este comentario?');" style="display:inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_comentario' ~ comentario.id) }}">
+                    <button class="btn-eliminar-comentario" type="submit" title="Eliminar comentario"> 🗑️</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+
+    </div>
+
+</div>
+
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bienvenida">
+                <h2>¡Bienvenido a la Red Social!</h2>
+                <p>Conectá con personas, compartí tus experiencias y descubrí nuevas historias.<br>
+                Publicá contenido, comentá y reaccioná con otros usuarios.</p>
+                <img src="{{ asset('images/Bienvenido.png') }}" alt="Bienvenida" class="imagen-bienvenida">
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="bienvenida">
+            <h2>¡Bienvenido a la Red Social!</h2>
+            <p>Conectá con personas, compartí tus experiencias y descubrí nuevas historias.<br>
+            Publicá contenido, comentá y reaccioná con otros usuarios.</p>
+            <img src="{{ asset('images/Bienvenido.png') }}" alt="Bienvenida" class="imagen-bienvenida">
+        </div>
+    {% endif %}
+</div>
+
+
+
+
 {% endblock %}

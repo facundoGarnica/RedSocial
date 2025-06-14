@@ -87,4 +87,8 @@ class Persona
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->nombre . ' ' . $this->apellido;
+    }
 }

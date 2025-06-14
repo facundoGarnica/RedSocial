@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mis posts{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/UserPost.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="post-container">
+    <h2 class="post-title">Crear nuevo post</h2>
+
+    {{ form_start(form, {
+        'attr': {
+            'class': 'create-post-form',
+            'enctype': 'multipart/form-data'
+        }
+    }) }}
+
+        <label for="titulo">Título:</label>
+        {{ form_widget(form.titulo, {
+            'attr': {
+                'id': 'titulo',
+                'placeholder': 'Título',
+                'required': true
+            }
+        }) }}
+
+        <label for="descripcion">Descripción:</label>
+        {{ form_widget(form.Descripcion, {
+            'attr': {
+                'id': 'descripcion',
+                'placeholder': '¿Qué estás pensando?',
+                'required': true
+            }
+        }) }}
+<label for="imagen" class="upload-icon-label" title="Subir foto">
+    Subir Foto
+    <span class="icon-camera" aria-hidden="true">📷</span>
+</label>
+
+{{ form_widget(form.imagen, {
+    'attr': {
+        'id': 'imagen',
+        'accept': 'image/*',
+        'class': 'hidden-file-input'
+    }
+}) }}
+
+
+
+        <button type="submit" class="btn-publicar">Publicar</button>
+    
+    {{ form_end(form) }}
+    <a href="{{ path('app_home') }}"><button class="btnregresar">Volver al menu</button></a>
+</div> {# cierre post-container #}
+
+<h3 class="posts-list-title">Mis posts</h3>
+
+<div class="posts-list">
+    {% if posts is not empty %}
+        {% for post in posts %}
+            <div class="post-item">
+                <div class="post-header">
+                    <span class="post-date">{{ post.fechaCreacion ? post.fechaCreacion|date('d/m/Y') : 'Fecha no disponible' }}</span>
+                </div>
+                <div class="post-content">
+                    <h4>{{ post.titulo }}</h4>
+                    <p>{{ post.Descripcion }}</p>
+                    {% if post.imagen %}
+                        <img src="{{ asset('images/' ~ post.imagen) }}" alt="Imagen del post" class="post-image">
+                    {% endif %}
+                </div>
+                <div class="post-actions">
+
+                    <form method="post" action="{{ path('app_posteo_usuarios_delete', {'id': post.id}) }}"
+                        onsubmit="return confirm('¿Seguro que querés eliminar este post?');" style="display:inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                        <button class="btn-eliminar">Eliminar</button>
+                    </form>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No tenés posts todavía.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

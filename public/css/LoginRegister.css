@@ -1,0 +1,161 @@
+/* Login Styles */
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background-color: #222;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #ffcc00;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #ddd;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #444;
+  color: white;
+}
+
+.login-form input:focus {
+  outline: none;
+  background-color: #555;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffcc00;
+  color: #222;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #e6b800;
+}
+
+.login-error {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.register-container, .login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #222;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.register-title, .login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #ffcc00;
+}
+
+.register-form label, .login-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.register-form input, .login-form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: none;
+  background: #333;
+  color: white;
+}
+
+button[type="submit"] {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #e6b800;
+}
+.btnregresar{
+    background-color: #e68200;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+.btnregresar:hover {
+    background-color: #a36302;
+}
+
+.register-error, .login-error {
+  background-color: #ff4d4d;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.agree-terms-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre checkbox y texto */
+  margin-top: 15px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #ffcc00; /* Color personalizado para el checkbox */
+  cursor: pointer;
+}
+
+.agree-terms-wrapper label {
+  color: #ccc;
+  cursor: pointer;
+}
+
+.agree-terms-wrapper a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+
+.agree-terms-wrapper a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Configuración de Cuenta{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/ConfiguracionCuenta.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="config-container">
+    <h1 class="config-title">Configuración de {{ user.persona.nombre }}</h1>
+
+    <div class="config-section">
+        <h2 class="section-title">Información de la cuenta</h2>
+
+        <div class="info-box">
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+        <div class="info-box">
+            <p><strong>Nombre:</strong> {{ user.persona.nombre }}</p>
+        </div>
+        <div class="info-box">
+            <p><strong>Apellido:</strong> {{ user.persona.apellido }}</p>
+        </div>
+    </div>
+
+
+    <div class="config-section">
+        <h3 class="section-title">Cambiar contraseña</h3>
+        {# Formulario de cambio de contraseña en proceso #}
+        <p class="placeholder-text">Funcionalidad en desarrollo.</p>
+    </div>
+
+    <a href="{{ path('app_home') }}">
+        <button class="btnregresar">Volver al menú</button>
+    </a>
+</div>
+{% endblock %}

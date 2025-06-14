@@ -26,13 +26,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Users')]
+    #[ORM\ManyToOne(targetEntity: Persona::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Persona $persona = null;
 
@@ -69,42 +66,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -113,17 +95,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // limpiar datos sensibles temporales
     }
 
     public function getPersona(): ?Persona
@@ -134,13 +111,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPersona(?Persona $persona): static
     {
         $this->persona = $persona;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Post>
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
@@ -152,25 +125,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->posts->add($post);
             $post->setUsuario($this);
         }
-
         return $this;
     }
 
     public function removePost(Post $post): static
     {
         if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
             if ($post->getUsuario() === $this) {
                 $post->setUsuario(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, ReaccionPost>
-     */
     public function getReaccionposts(): Collection
     {
         return $this->reaccionposts;
@@ -182,25 +149,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->reaccionposts->add($reaccionpost);
             $reaccionpost->setUsuario($this);
         }
-
         return $this;
     }
 
     public function removeReaccionpost(ReaccionPost $reaccionpost): static
     {
         if ($this->reaccionposts->removeElement($reaccionpost)) {
-            // set the owning side to null (unless already changed)
             if ($reaccionpost->getUsuario() === $this) {
                 $reaccionpost->setUsuario(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, ReaccionComentario>
-     */
     public function getReaccioncomentarios(): Collection
     {
         return $this->reaccioncomentarios;
@@ -212,25 +173,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->reaccioncomentarios->add($reaccioncomentario);
             $reaccioncomentario->setUsuario($this);
         }
-
         return $this;
     }
 
     public function removeReaccioncomentario(ReaccionComentario $reaccioncomentario): static
     {
         if ($this->reaccioncomentarios->removeElement($reaccioncomentario)) {
-            // set the owning side to null (unless already changed)
             if ($reaccioncomentario->getUsuario() === $this) {
                 $reaccioncomentario->setUsuario(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Comentario>
-     */
     public function getComentarios(): Collection
     {
         return $this->comentarios;
@@ -242,19 +197,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->comentarios->add($comentario);
             $comentario->setUsuario($this);
         }
-
         return $this;
     }
 
     public function removeComentario(Comentario $comentario): static
     {
         if ($this->comentarios->removeElement($comentario)) {
-            // set the owning side to null (unless already changed)
             if ($comentario->getUsuario() === $this) {
                 $comentario->setUsuario(null);
             }
         }
-
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->persona ? $this->persona->getNombre() . ' ' . $this->persona->getApellido() : 'Usuario sin persona asociada';
+}
 }
