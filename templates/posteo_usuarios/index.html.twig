@@ -68,6 +68,12 @@
                 <div class="post-content">
                     <h4>{{ post.titulo }}</h4>
                     <p>{{ post.Descripcion }}</p>
+<p>
+	<Strong>Estado:</Strong>
+	{{ post.estado }}
+</p>
+
+
                     {% if post.imagen %}
                         <img src="{{ asset('images/' ~ post.imagen) }}" alt="Imagen del post" class="post-image">
                     {% endif %}

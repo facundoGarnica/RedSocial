@@ -20,39 +20,41 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
-public function findAllWithUsersAndComments(): array
-{
-    return $this->createQueryBuilder('p')
-        ->leftJoin('p.usuario', 'u')
-        ->addSelect('u')
-        ->leftJoin('p.comentarios', 'c')
-        ->addSelect('c')
-        ->leftJoin('c.usuario', 'cu')
-        ->addSelect('cu')
-        ->orderBy('p.FechaCreacion', 'DESC')
-        ->getQuery()
-        ->getResult();
-}
-public function getReaccionesPorPost(Post $post): array
-{
-    $conn = $this->getEntityManager()->getConnection();
-
-    $sql = '
-        SELECT emoticon, COUNT(*) as cantidad
-        FROM reaccion_post
-        WHERE post_id = :postId
-        GROUP BY emoticon
-    ';
-    $stmt = $conn->prepare($sql);
-    $resultSet = $stmt->executeQuery(['postId' => $post->getId()]);
-
-    $resultados = [];
-    foreach ($resultSet->fetchAllAssociative() as $row) {
-        $resultados[$row['emoticon']] = (int)$row['cantidad'];
+    public function findAllWithUsersAndComments(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.usuario', 'u')
+            ->addSelect('u')
+            ->leftJoin('p.comentarios', 'c')
+            ->addSelect('c')
+            ->leftJoin('c.usuario', 'cu')
+            ->addSelect('cu')
+            ->where('p.estado = :estado')
+            ->setParameter('estado', 'aprobado')
+            ->orderBy('p.FechaCreacion', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
+    public function getReaccionesPorPost(Post $post): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
 
-    return $resultados;
-}
+        $sql = '
+            SELECT emoticon, COUNT(*) as cantidad
+            FROM reaccion_post
+            WHERE post_id = :postId
+            GROUP BY emoticon
+        ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['postId' => $post->getId()]);
+
+        $resultados = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $resultados[$row['emoticon']] = (int)$row['cantidad'];
+        }
+
+        return $resultados;
+    }
 
 //    /**
 //     * @return Post[] Returns an array of Post objects

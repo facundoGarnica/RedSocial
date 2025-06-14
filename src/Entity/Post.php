@@ -38,6 +38,9 @@ class Post
     #[ORM\OneToMany(targetEntity: ReaccionPost::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $reaccionposts;
 
+    #[ORM\Column(length: 50)]
+    private ?string $estado = null;
+
     public function __construct()
     {
         $this->comentarios = new ArrayCollection();
@@ -166,6 +169,17 @@ class Post
             }
         }
 
+        return $this;
+    }
+
+    public function getEstado(): ?string
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(string $estado): self
+    {
+        $this->estado = $estado;
         return $this;
     }
     public function __toString(): string

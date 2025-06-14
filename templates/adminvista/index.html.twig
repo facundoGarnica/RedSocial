@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/Administrativo.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/AdminJS.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+    
+{% endblock %}
+{% block body %}
+    <div class="admin-section">
+    <h2>Usuarios Registrados</h2>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+                        {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.persona.nombre }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <form action="{{ path('admin_actualizar_roles_usuario', { id: usuario.id }) }}" method="POST" style="display:inline">
+                            <label>
+                                <input type="checkbox" name="roles[]" value="ROLE_USER"
+                                    {{ 'ROLE_USER' in usuario.roles ? 'checked' : '' }}>
+                                Usuario
+                            </label><br>
+                            <label>
+                                <input type="checkbox" name="roles[]" value="ROLE_ADMIN"
+                                    {{ 'ROLE_ADMIN' in usuario.roles ? 'checked' : '' }}>
+                                Administrativo
+                            </label>
+                    </td>
+                    <td>
+                            <button type="submit" class="btn-submit">Guardar Roles</button>
+                        </form>
+                        <form action="{{ path('admin_eliminar_usuario', { id: usuario.id }) }}" method="POST" style="display:inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('eliminar_usuario_' ~ usuario.id) }}">
+                            <button type="submit" class="btn-delete">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">No hay usuarios registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+    <div class="admin-section">
+        <h2>Posts del Sistema</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Fecha</th>
+                    <th>Imagen</th>
+                    <th> descripcion</th>
+                    <th>Estado</th>
+                    <th>Cambiar Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.titulo }}</td>
+                        <td>{{ post.usuario.persona.nombre }}</td>
+                        <td>{{ post.FechaCreacion ? post.FechaCreacion|date('d/m/Y') : 'Sin fecha' }}</td>
+                        <td>
+                            {% if post.imagen %}
+                                <img 
+                                    src="{{ asset('images/' ~ post.imagen) }}" 
+                                    alt="Imagen del post {{ post.titulo }}" 
+                                    style="max-width: 100px; max-height: 60px; object-fit: cover; cursor: pointer;" 
+                                    onclick="openModal('{{ asset('images/' ~ post.imagen) }}')"
+                                >
+
+                            {% else %}
+                                Sin imagen
+                            {% endif %}
+                         
+                        </td>
+                        <td class="descripcion-completa">
+                            {{ post.descripcion }}
+                        </td>
+                        <td class="estado-{{ post.estado|lower|replace({' ': '_'}) }}">
+                            {{ post.estado|capitalize }}
+                        </td>
+                        <td>
+                            <form action="{{ path('admin_actualizar_estado_post', { id: post.id }) }}" method="POST">
+                                <select name="estado" class="estado-select">
+                                    <option value="pendiente" {{ post.estado == 'pendiente' ? 'selected' }}>Pendiente</option>
+                                    <option value="aprobado" {{ post.estado == 'aprobado' ? 'selected' }}>Aprobado</option>
+                                    <option value="no_aprobado" {{ post.estado == 'no_aprobado' ? 'selected' }}>No Aprobado</option>
+                                </select>
+                                <button type="submit" class="btn-submit">Actualizar</button>
+                            </form>
+                            <form action="{{ path('admin_eliminar_post', { id: post.id }) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este post?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('eliminar_post_' ~ post.id) }}">
+    <button type="submit" class="btn-delete">Eliminar</button>
+</form>
+
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6">No hay posts registrados.</td></tr>
+                {% endfor %}
+                                       <!-- Modal para la imagen-->
+                        <div id="imageModal" class="modal" onclick="closeModal(event)">
+                            <span class="modal-close">&times;</span>
+                            <img class="modal-content" id="modalImage" alt="Imagen completa">
+                        </div>
+            </tbody>
+        </table>
+        
+    </div>
+     <a href="{{ path('app_home') }}">
+        <button class="btnregresar">Volver al menú</button>
+    </a>
+
+    
+{% endblock %}

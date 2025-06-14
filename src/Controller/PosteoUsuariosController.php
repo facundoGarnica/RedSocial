@@ -28,7 +28,7 @@ class PosteoUsuariosController extends AbstractController
         $post = new Post();
         $post->setUsuario($user);
         $post->setFechaCreacion(new \DateTime());
-
+        $post->setEstado('pendiente'); //estado para que no se publique automáticamente
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 

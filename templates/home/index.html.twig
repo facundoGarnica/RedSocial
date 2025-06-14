@@ -42,9 +42,15 @@
             <li>
                 <a href="{{ path('app_configuracion') }}">Configurar cuenta</a>
             </li>
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+                <li>
+                    <a href="{{ path('app_adminvista') }}">Administración</a>
+                </li>
+            {% endif %}
         </ul>
     {% endif %}
 </div>
+
 
 
 
