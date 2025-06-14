@@ -120,38 +120,64 @@ class HomeController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['error' => 'No autenticado'], 401);
+            }
             return $this->redirectToRoute('app_login');
         }
-
-        $reaccioncomentario = new ReaccionComentario();
-
-        $reaccioncomentario->setUsuario($user);
-        $reaccioncomentario->setComentario($comentario);
 
         $emoticon = $request->request->get('reaction');
 
         if (!$emoticon) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['error' => 'No se recibió ninguna reacción.'], 400);
+            }
             $this->addFlash('error', 'No se recibió ninguna reacción.');
             return $this->redirectToRoute('app_home');
         }
 
-        // Verificar si ya hay una reacción de este usuario para este comentario
-        $reaccionExistente = $em->getRepository(ReaccionComentario::class)
-            ->findOneBy(['usuario' => $user, 'comentario' => $comentario]);
+        $repo = $em->getRepository(ReaccionComentario::class);
+        $reaccionExistente = $repo->findOneBy(['usuario' => $user, 'comentario' => $comentario]);
 
         if ($reaccionExistente) {
-            // Actualizamos la reacción existente
             $reaccionExistente->setEmoticon($emoticon);
-            $this->addFlash('success', 'Tu reacción fue actualizada.');
+            $mensaje = 'Tu reacción fue actualizada.';
         } else {
-            // Creamos una nueva
-            $reaccioncomentario->setEmoticon($emoticon);
-            $em->persist($reaccioncomentario);
-            $this->addFlash('success', 'Reacción añadida correctamente.');
+            $reaccionComentario = new ReaccionComentario();
+            $reaccionComentario->setUsuario($user);
+            $reaccionComentario->setComentario($comentario);
+            $reaccionComentario->setEmoticon($emoticon);
+            $em->persist($reaccionComentario);
+            $mensaje = 'Reacción añadida correctamente.';
         }
 
         $em->flush();
 
+        // Inicializar contadores para cada tipo de reacción
+        $reacciones = [
+            'me_gusta' => 0,
+            'no_me_gusta' => 0,
+            'me_entristece' => 0,
+            'me_enoja' => 0,
+            'me_encanta' => 0,
+        ];
+
+        // Contar reacciones actuales del comentario
+        foreach ($comentario->getReaccionComentarios() as $r) {
+            $tipo = $r->getEmoticon();
+            if (isset($reacciones[$tipo])) {
+                $reacciones[$tipo]++;
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'success' => $mensaje,
+                'reacciones' => $reacciones,
+            ]);
+        }
+
+        $this->addFlash('success', $mensaje);
         return $this->redirectToRoute('app_home');
     }
 
@@ -162,36 +188,63 @@ class HomeController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['error' => 'No autenticado'], 401);
+            }
             return $this->redirectToRoute('app_login');
         }
 
         $emoticon = $request->request->get('reaction');
 
         if (!$emoticon) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['error' => 'No se recibió ninguna reacción.'], 400);
+            }
             $this->addFlash('error', 'No se recibió ninguna reacción.');
             return $this->redirectToRoute('app_home');
         }
 
-        // Verificar si ya hay una reacción de este usuario para este post
-        $reaccionExistente = $em->getRepository(ReaccionPost::class)
-            ->findOneBy(['usuario' => $user, 'post' => $post]);
+        $repo = $em->getRepository(ReaccionPost::class);
+        $reaccionExistente = $repo->findOneBy(['usuario' => $user, 'post' => $post]);
 
         if ($reaccionExistente) {
-            // Actualizamos la reacción existente
             $reaccionExistente->setEmoticon($emoticon);
-            $this->addFlash('success', 'Tu reacción fue actualizada.');
+            $mensaje = 'Tu reacción fue actualizada.';
         } else {
-            // Creamos una nueva
             $reaccionpost = new ReaccionPost();
             $reaccionpost->setUsuario($user);
             $reaccionpost->setPost($post);
             $reaccionpost->setEmoticon($emoticon);
             $em->persist($reaccionpost);
-            $this->addFlash('success', 'Reacción añadida correctamente.');
+            $mensaje = 'Reacción añadida correctamente.';
         }
 
         $em->flush();
 
+        // Contadores de reacciones actualizados
+        $reacciones = [
+            'me_gusta' => 0,
+            'no_me_gusta' => 0,
+            'me_entristece' => 0,
+            'me_enoja' => 0,
+            'me_encanta' => 0,
+        ];
+
+        foreach ($post->getReaccionPosts() as $r) {
+            $tipo = $r->getEmoticon();
+            if (isset($reacciones[$tipo])) {
+                $reacciones[$tipo]++;
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'success' => $mensaje,
+                'reacciones' => $reacciones,
+            ]);
+        }
+
+        $this->addFlash('success', $mensaje);
         return $this->redirectToRoute('app_home');
     }
 }

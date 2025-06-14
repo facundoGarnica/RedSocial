@@ -71,28 +71,25 @@
    <div class="post-item" data-post-id="{{ post.id }}">
 
 
-       <div class="post-reactions">
-    {% set reacciones = reaccionesPosts[post.id]|default({}) %}
+    <div class="post-reactions">
+        {% set reacciones = reaccionesPosts[post.id]|default({}) %}
 
 
-    <form action="{{ path('app_reaccionar_post', {id: post.id}) }}" method="POST">
-        <button type="submit" class="reaction-btn" name="reaction" value="me_gusta">👍
-            <span>{{ reacciones['me_gusta']|default(0) }}</span>
+        <form class="form-reaccion" data-post-id="{{ post.id }}">
+    {% for tipo, emoji in {
+        'me_gusta': '👍',
+        'no_me_gusta': '👎',
+        'me_entristece': '😢',
+        'me_enoja': '😠',
+        'me_encanta': '😍'
+    } %}
+        <button type="button" class="reaction-btn" data-reaccion="{{ tipo }}">
+            {{ emoji }} <span class="contador">{{ reacciones[tipo]|default(0) }}</span>
         </button>
-        <button type="submit" class="reaction-btn" name="reaction" value="no_me_gusta">👎
-            <span>{{ reacciones['no_me_gusta']|default(0) }}</span>
-        </button>
-        <button type="submit" class="reaction-btn" name="reaction" value="me_entristece">😢
-            <span>{{ reacciones['me_entristece']|default(0) }}</span>
-        </button>
-        <button type="submit" class="reaction-btn" name="reaction" value="me_enoja">😠
-            <span>{{ reacciones['me_enoja']|default(0) }}</span>
-        </button>
-        <button type="submit" class="reaction-btn" name="reaction" value="me_encanta">😍
-            <span>{{ reacciones['me_encanta']|default(0) }}</span>
-        </button>
-    </form>
-</div>
+    {% endfor %}
+</form>
+
+    </div>
 
 
         <div class="comentar-form">
@@ -104,7 +101,7 @@
 
 <div class="comments-list">
     {% for comentario in post.comentarios %}
-        <div class="comment-item">
+        <div class="comment-item" data-comentario-id="{{ comentario.id }}">
             <p>
                 <strong>{{ comentario.usuario.persona.Nombre }}:</strong>
                 {{ comentario.descripcion }}
@@ -113,30 +110,20 @@
                 Comentado el día {{ comentario.fechaCreacion ? comentario.fechaCreacion|date('d/m/Y') : 'Fecha no disponible' }}
             </small>
 
-                <form action="{{ path('app_reaccionar_comentario', {id: comentario.id}) }}" method="POST" class="reacciones-comentario">
-                    <button type="submit" class="reaction-btn" name="reaction" value="me_gusta">👍
-                        <span>{{ reaccionesComentarios[comentario.id]['me_gusta']|default(0) }}</span>
+            <form class="reacciones-comentario" data-comentario-id="{{ comentario.id }}">
+                {% set reacciones = reaccionesComentarios[comentario.id]|default({}) %}
+                {% for tipo, emoji in {
+                    'me_gusta': '👍',
+                    'no_me_gusta': '👎',
+                    'me_entristece': '😢',
+                    'me_enoja': '😠',
+                    'me_encanta': '😍'
+                } %}
+                    <button type="button" class="reaction-btn" data-reaccion="{{ tipo }}">
+                        {{ emoji }} <span class="contador">{{ reacciones[tipo]|default(0) }}</span>
                     </button>
-                    <button type="submit" class="reaction-btn" name="reaction" value="no_me_gusta">👎
-                        <span>{{ reaccionesComentarios[comentario.id]['no_me_gusta']|default(0) }}</span>
-                    </button>
-                    <button type="submit" class="reaction-btn" name="reaction" value="me_entristece">😢
-                        <span>{{ reaccionesComentarios[comentario.id]['me_entristece']|default(0) }}</span>
-                    </button>
-                    <button type="submit" class="reaction-btn" name="reaction" value="me_enoja">😠
-                        <span>{{ reaccionesComentarios[comentario.id]['me_enoja']|default(0) }}</span>
-                    </button>
-                    <button type="submit" class="reaction-btn" name="reaction" value="me_encanta">😍
-                        <span>{{ reaccionesComentarios[comentario.id]['me_encanta']|default(0) }}</span>
-                    </button>
-                </form>
-
-            {% if app.user and app.user.id == comentario.usuario.id %}
-                <form method="post" action="{{ path('comentario_delete', {'id': comentario.id}) }}" onsubmit="return confirm('¿Seguro que querés eliminar este comentario?');" style="display:inline">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete_comentario' ~ comentario.id) }}">
-                    <button class="btn-eliminar-comentario" type="submit" title="Eliminar comentario"> 🗑️</button>
-                </form>
-            {% endif %}
+                {% endfor %}
+            </form>
 
             {% if app.user and app.user.id == comentario.usuario.id %}
                 <form method="post" action="{{ path('comentario_delete', {'id': comentario.id}) }}" onsubmit="return confirm('¿Seguro que querés eliminar este comentario?');" style="display:inline">
@@ -147,6 +134,7 @@
         </div>
     {% endfor %}
 </div>
+
 
 
     </div>
