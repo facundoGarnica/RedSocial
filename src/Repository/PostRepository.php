@@ -33,6 +33,26 @@ public function findAllWithUsersAndComments(): array
         ->getQuery()
         ->getResult();
 }
+public function getReaccionesPorPost(Post $post): array
+{
+    $conn = $this->getEntityManager()->getConnection();
+
+    $sql = '
+        SELECT emoticon, COUNT(*) as cantidad
+        FROM reaccion_post
+        WHERE post_id = :postId
+        GROUP BY emoticon
+    ';
+    $stmt = $conn->prepare($sql);
+    $resultSet = $stmt->executeQuery(['postId' => $post->getId()]);
+
+    $resultados = [];
+    foreach ($resultSet->fetchAllAssociative() as $row) {
+        $resultados[$row['emoticon']] = (int)$row['cantidad'];
+    }
+
+    return $resultados;
+}
 
 //    /**
 //     * @return Post[] Returns an array of Post objects
