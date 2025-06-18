@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Red social Facu{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/Home.css') }}">
@@ -12,7 +12,7 @@
 
 {% block body %}
 <div class="BarraNavegacion">
-    <h1><a href="{{ path('app_home') }}">Home</a></h1>
+    
     <nav>
         <ul>
             {% if app.user %}
@@ -33,6 +33,9 @@
 <div class="BarraIzquierda">
     {% if app.user %}
         <ul>
+            <li>
+                <a href="{{ path('app_home') }}">Inicio</a>
+            </li>
             <li>
                 <a href="{{ path('app_posteo_usuarios') }}">Mis Posts</a>
             </li>
@@ -74,15 +77,15 @@
     {% endif %}
 
     <p class="fb-post-date">El día {{ post.FechaCreacion ? post.FechaCreacion|date('d/m/Y') : 'Sin fecha' }}</p>
-</div>
+    </div>
 
-<div class="post-content fb-post-content">
-    <h4 class="fb-post-title">{{ post.titulo }}</h4>
-    <p class="fb-post-description">{{ post.descripcion }}</p>
-    {% if post.imagen %}
-        <img src="{{ asset('images/' ~ post.imagen) }}" alt="Imagen del post" class="post-image fb-post-image">
-    {% endif %}
-</div>
+    <div class="post-content fb-post-content">
+        <h4 class="fb-post-title">{{ post.titulo }}</h4>
+        <p class="fb-post-description">{{ post.descripcion }}</p>
+        {% if post.imagen %}
+            <img src="{{ asset('images/' ~ post.imagen) }}" alt="Imagen del post" class="post-image fb-post-image">
+        {% endif %}
+    </div>
 
    <div class="post-item" data-post-id="{{ post.id }}">
 
@@ -103,9 +106,9 @@
             {{ emoji }} <span class="contador">{{ reacciones[tipo]|default(0) }}</span>
         </button>
     {% endfor %}
-</form>
+        </form>
 
-    </div>
+ </div>
 
 
         <div class="comentar-form">
@@ -142,19 +145,15 @@
             </form>
 
            {% if app.user and (app.user.id == comentario.usuario.id or is_granted('ROLE_ADMIN')) %}
-    <form method="post" action="{{ path('comentario_delete', {'id': comentario.id}) }}" onsubmit="return confirm('¿Seguro que querés eliminar este comentario?');" style="display:inline">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete_comentario' ~ comentario.id) }}">
-        <button class="btn-eliminar-comentario" type="submit" title="Eliminar comentario"> 🗑️</button>
-    </form>
-{% endif %}
-
+                <form method="post" action="{{ path('comentario_delete', {'id': comentario.id}) }}" onsubmit="return confirm('¿Seguro que querés eliminar este comentario?');" style="display:inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_comentario' ~ comentario.id) }}">
+                    <button class="btn-eliminar-comentario" type="submit" title="Eliminar comentario"> 🗑️</button>
+                </form>
+            {% endif %}
         </div>
     {% endfor %}
 </div>
 
-
-
-    </div>
 
 </div>
 

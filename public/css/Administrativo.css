@@ -138,3 +138,125 @@ body {
 .btn-delete:hover {
     background-color: #c0392b;
 }
+@media (max-width: 720px) {
+    body {
+        padding: 1rem;
+    }
+
+    .admin-section {
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    .admin-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Ocultamos encabezado de tabla */
+    .admin-table thead {
+        display: none;
+    }
+
+    /* Cada fila es una "tarjeta" con espacio y sombra */
+    .admin-table tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+    /* Cada celda ocupa toda la fila con label y valor */
+    .admin-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border: none;
+        font-size: 0.95rem;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        flex-wrap: wrap;
+        word-break: break-word;
+    }
+
+    /* Última celda sin borde inferior */
+    .admin-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Etiqueta en negrita y mayúsculas */
+    .admin-table td::before {
+        content: attr(data-label) ":";
+        font-weight: 700;
+        color: #666;
+        flex-basis: 40%;
+        max-width: 40%;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    /* Contenido a la derecha, ocupa resto del espacio */
+    .admin-table td>*:not(::before) {
+        flex-grow: 1;
+        text-align: right;
+        min-width: 0;
+    }
+
+    /* Botones a full ancho con margen */
+    .btn-submit,
+    .btn-delete {
+        width: 100%;
+        padding: 10px 0;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    /* Select ancho completo con padding para usabilidad */
+    select.estado-select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        box-sizing: border-box;
+    }
+
+    /* Botón regresar ancho completo y cómodo */
+    .btnregresar {
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 15px 0;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    /* Imagen en tabla pequeña, redondeada */
+    .admin-table td img {
+        max-width: 70px;
+        max-height: 50px;
+        cursor: pointer;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    /* Ajustes modal para imagen */
+    .modal-content {
+        max-width: 95%;
+        max-height: 70vh;
+        border-radius: 8px;
+    }
+
+    .modal-close {
+        font-size: 36px;
+        top: 15px;
+        right: 25px;
+        cursor: pointer;
+    }
+}
