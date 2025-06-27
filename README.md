@@ -1,0 +1,1 @@
+Este proyecto esta hecho en symfony 6.3, es una red social simple la cual las personas pueden publicar post, editarlos, borrarlos y en el mismo se puede comentar y dar like, como tambien dar like a comentarios
